@@ -30,6 +30,8 @@ export async function saveExperience(
     if (!session) {
     throw new Error("Unauthorized");
   }
+
+  console.log("Session user ID:", session.user.id);
  
    const profile = await prisma.candidateProfile.findUnique({
     where: {
@@ -40,6 +42,9 @@ export async function saveExperience(
   if (!profile) {
     throw new Error("Candidate profile not found.");
   }
+
+
+console.log("Profile:", profile);
 
   const experienceId = formData.get("experienceId")?.toString();
 

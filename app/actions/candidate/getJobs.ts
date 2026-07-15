@@ -2,9 +2,50 @@
 
 import { prisma } from "@/lib/prisma";
 
-export async function getJobs() {
+export async function getJobs(
+  query?: string,
+  location?: string
+) {
   try {
     const jobs = await prisma.job.findMany({
+      where: {
+        AND: [
+          query
+            ? {
+                OR: [
+                  {
+                    title: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    company: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    description: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              }
+            : {},
+
+          location
+            ? {
+                location: {
+                  contains: location,
+                  mode: "insensitive",
+                },
+              }
+            : {},
+        ],
+      },
+
       orderBy: {
         createdAt: "desc",
       },

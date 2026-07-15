@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Home, Briefcase, Bell, User, Menu, X } from "lucide-react";
+import Link from "next/link";
 
 export default function CandidateNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,14 +48,16 @@ export default function CandidateNavbar() {
           <div className="hidden md:flex items-center gap-6">
 
             {/* Jobs */}
+            <Link href="/candidate/applications">
             <div className="relative group">
               <button className="text-background hover:text-accent transition">
                 <Briefcase size={22} />
               </button>
               <span className="absolute left-1/2 -translate-x-1/2 top-10 hidden group-hover:block bg-black text-white text-xs px-2 py-1 rounded">
-                Jobs
+                Applications
               </span>
             </div>
+            </Link>
 
             {/* Notifications */}
             <div className="relative group">
@@ -69,7 +72,9 @@ export default function CandidateNavbar() {
             </div>
 
             {/* Profile */}
+               <Link href="/candidate/profile">
             <div className="relative group">
+           
               <button className="text-background hover:text-accent transition">
                 <User size={24} />
               </button>
@@ -78,6 +83,7 @@ export default function CandidateNavbar() {
                 Profile
               </span>
             </div>
+              </Link>
           </div>
 
           {/* MOBILE */}
@@ -96,21 +102,21 @@ export default function CandidateNavbar() {
       {isOpen && (
         <div className="md:hidden px-4 pb-4 space-y-4 text-background">
 
-          <a href="/candidate" className="flex items-center gap-2">
+          <Link href="/candidate" className="flex items-center gap-2">
             <Home size={18} /> Home
-          </a>
+          </Link>
 
-          <a href="#" className="flex items-center gap-2">
-            <Briefcase size={18} /> Jobs
-          </a>
+          <Link href="/candidate/applications" className="flex items-center gap-2">
+            <Briefcase size={18} /> Applications
+          </Link>
 
           <a href="#" className="flex items-center gap-2">
             <Bell size={18} /> Notifications
           </a>
 
-          <a href="#" className="flex items-center gap-2">
+          <Link href="/candidate/profile" className="flex items-center gap-2">
             <User size={18} /> Profile
-          </a>
+          </Link>
 
         </div>
       )}

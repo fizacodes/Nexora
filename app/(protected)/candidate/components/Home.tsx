@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import { MapPin } from "lucide-react";
+import Link from "next/link";
+import SearchBar from "./SearchBar";
 
 export default function CandidateHomePage({ jobs = [] }: any) {
   const [selectedJob, setSelectedJob] = useState(jobs[0] || null);
+
+
 
   return (
   <div className="h-screen flex flex-col bg-gray-200">
@@ -23,23 +27,7 @@ export default function CandidateHomePage({ jobs = [] }: any) {
   <div className="flex gap-2 max-w-[400px] bg-white text-gray-600  rounded-lg shadow-sm">
 
     {/* Job title input */}
-    <input
-      type="text"
-      placeholder="Job title, keywords"
-      className="flex-1 px-3   outline-none text-sm"
-    />
-
-    {/* Location input */}
-    <input
-      type="text"
-      placeholder="Location"
-      className="flex-1 px-3  outline-none text-sm border-l"
-    />
-
-    {/* Search button */}
-    <button className="bg-accent text-background px-5 py-2 rounded-md text-sm font-medium hover:opacity-90">
-      Search
-    </button>
+  <SearchBar/>
 
   </div>
 
@@ -115,9 +103,11 @@ export default function CandidateHomePage({ jobs = [] }: any) {
   {selectedJob.description}
 </div>
 
-            <button className="mt-6 bg-accent text-background px-6 py-2 rounded hover:opacity-90">
-              Apply Now
-            </button>
+          <Link href={`/candidate/jobs/${selectedJob.id}/apply`}>
+  <button className="mt-6 bg-accent text-background px-6 py-2 rounded hover:opacity-90">
+    Apply Now
+  </button>
+</Link>
 
           </div>
         )}

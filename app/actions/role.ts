@@ -25,4 +25,38 @@ export async function setRole(formData: FormData) {
       role,
     },
   });
+
+  if (role === "CANDIDATE") {
+    await prisma.candidateProfile.upsert({
+      where: {
+        userId: session.user.id,
+      },
+      update: {},
+      create: {
+        userId: session.user.id,
+      },
+    });
+  }
+
+  if (role === "RECRUITER") {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: session.user.id,
+      },
+      select: {
+        name: true,
+      },
+    });
+
+    await prisma.recruiterProfile.upsert({
+      where: {
+        userId: session.user.id,
+      },
+      update: {},
+      create: {
+        userId: session.user.id,
+        fullName: user?.name ?? "",
+      },
+    });
+  }
 }

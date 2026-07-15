@@ -20,15 +20,17 @@ model User {
   image         String?
 
   password      String?
-  role          Role
+  role          Role?
 
   accounts      Account[]
   sessions      Session[]
 
   // relations
-  jobsPosted    Job[]        @relation("RecruiterJobs")
+  
   applications  Application[]
   profile       CandidateProfile?
+
+  recruiterProfile RecruiterProfile?
 }
 
 model CandidateProfile {
@@ -57,6 +59,51 @@ skills Skill[]
 experiences Experience[]
 
 educations Education[]
+
+ applications Application[]
+}
+
+model RecruiterProfile {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Recruiter Information
+  fullName String?
+  jobTitle String?
+  phone String?
+
+  // Company Information
+  companyName String?
+  companyWebsite String?
+  companyEmail String?
+  companySize CompanySize?
+
+  industry String?
+  foundedYear Int?
+
+  // Location
+  country String?
+  city String?
+  address String?
+
+  // Branding
+  logoUrl String?
+  coverImageUrl String?
+
+  // About Company
+  description String? @db.Text
+
+  // Social Links
+  linkedinUrl String?
+  twitterUrl String?
+
+  // Relations
+  jobs Job[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Skill{
@@ -119,43 +166,72 @@ model Job {
   id          String   @id @default(cuid())
 
   title       String
-  description String @db.Text
+  description String   @db.Text
 
   company     String
   location    String
   type        JobType
+
   salaryMin   Int?
   salaryMax   Int?
 
   isRemote    Boolean  @default(false)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // recruiter
-  recruiterId String
-  recruiter   User @relation("RecruiterJobs", fields: [recruiterId], references: [id], onDelete: Cascade)
+  // Recruiter
+  recruiterProfileId String
+  recruiterProfile   RecruiterProfile @relation(fields: [recruiterProfileId], references: [id], onDelete: Cascade)
 
   applications Application[]
-  
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Application {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId      String
-  jobId       String
+  userId String
+  profileId String
+  jobId String
 
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  job         Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile CandidateProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
-  status      ApplicationStatus @default(PENDING)
+  status ApplicationStatus @default(APPLIED)
+
+  resumeType ResumeType
+  resumeUrl String? // Cloudinary URL if uploaded
+
   coverLetter String?
-  resumeUrl   String?
 
-  createdAt   DateTime @default(now())
+  appliedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, jobId])
+}
+
+enum ResumeType {
+  NEXORA
+  UPLOADED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  REVIEWING
+  SHORTLISTED
+  INTERVIEW
+  OFFERED
+  HIRED
+  REJECTED
+  WITHDRAWN
+}
+enum CompanySize {
+  STARTUP
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
 }
 
 model Account {
@@ -212,9 +288,3 @@ enum JobType {
   REMOTE
 }
 
-enum ApplicationStatus {
-  PENDING
-  REVIEWED
-  ACCEPTED
-  REJECTED
-}

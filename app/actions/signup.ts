@@ -1,5 +1,4 @@
 "use server";
-
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { signupSchema } from "@/lib/validators/signupSchema";
@@ -48,14 +47,31 @@ export async function signup(prevState: any, formData: FormData) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await prisma.user.create({
+ const user = await prisma.user.create({
+  data: {
+    name,
+    email,
+    password: hashedPassword,
+    role,
+  },
+});
+
+  if (role === "CANDIDATE") {
+  await prisma.candidateProfile.create({
     data: {
-      name,
-      email,
-      password: hashedPassword,
-      role,
+      userId: user.id,
     },
   });
+}
+
+if (role === "RECRUITER") {
+  await prisma.recruiterProfile.create({
+    data: {
+      userId: user.id,
+      fullName: name,
+    },
+  });
+}
 
   return {
     success: true,

@@ -1,4 +1,6 @@
 import { getApplicationDetails } from "@/app/actions/recruiter/getApplicantsDetail";
+import ApplicationStatusForm from "../ApplicantFormStatus";
+import MessageCandidateButton from "../MessageCandidateButton";
 
 interface Props {
   params: Promise<{
@@ -31,6 +33,21 @@ export default async function ApplicantDetailsPage({
                 Review the candidate’s background and application materials in a concise, polished layout.
               </p>
             </div>
+
+            <div className="border rounded-lg p-6 mb-8">
+  <h2 className="text-2xl font-semibold mb-4">
+    Application Status
+  </h2>
+
+  <ApplicationStatusForm
+    applicationId={application.id}
+    currentStatus={application.status}
+  />
+</div>
+<MessageCandidateButton
+  jobId={application.jobId}
+  candidateProfileId={application.profile.id}
+/>
 
             <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
               <p className="font-semibold text-slate-900">{application.user.name}</p>

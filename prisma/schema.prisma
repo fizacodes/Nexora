@@ -31,6 +31,11 @@ model User {
   profile       CandidateProfile?
 
   recruiterProfile RecruiterProfile?
+
+  notifications Notification[]
+
+  messages Message[] 
+
 }
 
 model CandidateProfile {
@@ -61,6 +66,8 @@ experiences Experience[]
 educations Education[]
 
  applications Application[]
+
+ conversations Conversation[]
 }
 
 model RecruiterProfile {
@@ -101,6 +108,8 @@ model RecruiterProfile {
 
   // Relations
   jobs Job[]
+
+  conversations Conversation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -182,6 +191,7 @@ model Job {
   recruiterProfile   RecruiterProfile @relation(fields: [recruiterProfileId], references: [id], onDelete: Cascade)
 
   applications Application[]
+  conversations Conversation[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -207,6 +217,8 @@ model Application {
 
   appliedAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  notifications Notification[]
 
   @@unique([userId, jobId])
 }
@@ -255,6 +267,60 @@ model Account {
   @@index([userId])
 }
 
+model Notification {
+  id String @id @default(cuid())
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title String
+  message String @db.Text
+
+  type NotificationType
+
+  isRead Boolean @default(false)
+
+  applicationId String?
+  application Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+
+model Conversation {
+  id String @id @default(cuid())
+
+  recruiterProfileId String
+  candidateProfileId String
+  jobId String
+
+  recruiter RecruiterProfile @relation(fields: [recruiterProfileId], references: [id], onDelete: Cascade)
+  candidate CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([recruiterProfileId, candidateProfileId, jobId])
+}
+
+model Message {
+  id String @id @default(cuid())
+
+  conversationId String
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  content String @db.Text
+
+  isRead Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -288,3 +354,10 @@ enum JobType {
   REMOTE
 }
 
+enum NotificationType {
+  APPLICATION
+  INTERVIEW
+  OFFER
+  MESSAGE
+  GENERAL
+}

@@ -1,52 +1,45 @@
 import Link from "next/link";
-import { MapPin, Briefcase, Banknote, ArrowLeft } from "lucide-react";
+import { MapPin, Briefcase, Banknote } from "lucide-react";
+import { deleteJob } from "@/app/actions/recruiter/deleteJob";
+import BackButton from "../../components/BackButton";
 
-export default function JobDetails({
-  job,
-}: {
-  job: any;
-}) {
+export default function JobDetails({ job }: { job: any }) {
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
-      <div className="mx-auto max-w-5xl px-6">
-
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-10 text-black overflow-hidden">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* Back Button */}
-        <Link
-          href="/recruiter/show-job"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-black"
-        >
-          <ArrowLeft size={18} />
-          Back to My Jobs
-        </Link>
+        <div className="mb-6">
+          <BackButton />
+        </div>
 
         {/* Header */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-
-          <h1 className="text-4xl font-bold text-gray-900">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
             {job.title}
           </h1>
 
-          <p className="mt-2 text-lg text-gray-600">
+          <p className="mt-2 text-base text-gray-600 sm:text-lg">
             {job.company}
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-5 text-gray-600">
-
+          <div className="mt-6 flex flex-wrap gap-4 text-sm text-gray-600 sm:text-base">
             <div className="flex items-center gap-2">
               <MapPin size={18} />
-              {job.location}
+              <span>{job.location}</span>
             </div>
 
             <div className="flex items-center gap-2">
               <Briefcase size={18} />
-              {job.type.replace("_", " ")}
+              <span>{job.type.replace("_", " ")}</span>
             </div>
 
             {(job.salaryMin || job.salaryMax) && (
               <div className="flex items-center gap-2">
                 <Banknote size={18} />
-                PKR {job.salaryMin?.toLocaleString()} -
-                {job.salaryMax?.toLocaleString()}
+                <span>
+                  PKR {job.salaryMin?.toLocaleString()} -{" "}
+                  {job.salaryMax?.toLocaleString()}
+                </span>
               </div>
             )}
 
@@ -55,79 +48,55 @@ export default function JobDetails({
                 Remote
               </span>
             )}
-
           </div>
-
         </div>
 
         {/* Description */}
-        <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-
-          <h2 className="mb-6 text-2xl font-semibold text-gray-900">
+        <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:mt-8 sm:p-8">
+          <h2 className="mb-5 text-xl font-semibold text-gray-900 sm:text-2xl">
             Job Description
           </h2>
 
-          <div
-            className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{
-              __html: job.description,
-            }}
-          />
-
+         <div className="whitespace-pre-wrap break-words text-gray-700 leading-7 text-sm sm:text-base">
+  {job.description}
+</div>
         </div>
 
         {/* Actions */}
-        <div className="mt-8 flex flex-wrap gap-4">
-          
-          <Link href={`/recruiter/show-job/${job.id}/edit`} >
-          <button
-            className="
-              rounded-lg
-              bg-accent
-              px-6
-              py-3
-              font-semibold
-              text-background
-              hover:opacity-90
-            "
+        <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
+          <Link
+            href={`/recruiter/show-job/${job.id}/edit`}
+            className="w-full sm:w-auto"
           >
-            Edit Job
-          </button>
+            <button className="w-full rounded-lg bg-accent px-6 py-3 font-semibold text-background transition hover:opacity-90">
+              Edit Job
+            </button>
           </Link>
-<Link href={`/recruiter/show-job/${job.id}/applicant`}>
 
-
-          <button
-            className="
-              rounded-lg
-              border
-              border-gray-300
-              px-6
-              py-3
-              font-semibold
-              hover:bg-gray-100
-            "
+          <Link
+            href={`/recruiter/show-job/${job.id}/applicant`}
+            className="w-full sm:w-auto"
           >
-            View Applicants
-          </button>
-        </Link>
-          <button
-            className="
-              rounded-lg
-              border
-              border-red-500
-              px-6
-              py-3
-              font-semibold
-              text-red-600
-              hover:bg-red-50
-            "
-          >
-            Delete Job
-          </button>
+            <button className="w-full rounded-lg border border-gray-300 px-6 py-3 font-semibold transition hover:bg-gray-100">
+              View Applicants
+            </button>
+          </Link>
 
+          <form
+            className="w-full sm:w-auto"
+            action={async () => {
+              "use server";
+              await deleteJob(job.id);
+            }}
+          >
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-accent px-6 py-3 font-semibold text-background transition hover:opacity-90"
+            >
+              Delete Job
+            </button>
+          </form>
         </div>
-
       </div>
     </div>
   );

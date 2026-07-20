@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { markNotificationsAsRead } from "@/app/actions/candidate/markNotificationsAsRead";
+import BackButton from "../components/BackButton";
 
 type NotificationPageClientProps = {
   notifications: Array<{
@@ -13,7 +14,9 @@ type NotificationPageClientProps = {
   }>;
 };
 
-export default function NotificationPageClient({ notifications }: NotificationPageClientProps) {
+export default function NotificationPageClient({
+  notifications,
+}: NotificationPageClientProps) {
   const [isPending, startTransition] = useTransition();
 
   const handleMarkAsRead = () => {
@@ -23,39 +26,63 @@ export default function NotificationPageClient({ notifications }: NotificationPa
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-black py-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow p-8">
-        <div className="mb-8 flex items-center justify-between gap-4">
-          <h1 className="text-3xl font-bold">Notifications</h1>
-          <button
-            onClick={handleMarkAsRead}
-            disabled={isPending}
-            className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
-          >
-            {isPending ? "Updating..." : "Mark all as read"}
-          </button>
-        </div>
+    <div className="min-h-screen bg-gray-100 py-6 text-black sm:py-8">
+      <div className="mx-auto w-full max-w-4xl px-4">
+        <div className="rounded-xl bg-white p-5 shadow sm:p-8">
+          {/* Header */}
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            {/* Back Button */}
+            <div className="self-start">
+              <BackButton />
+            </div>
 
-        {notifications.length === 0 ? (
-          <p>No notifications yet.</p>
-        ) : (
-          <div className="space-y-4">
-            {notifications.map((notification) => (
-              <div
-                key={notification.id}
-                className={`border rounded-lg p-5 ${
-                  notification.isRead ? "bg-white" : "bg-green-50"
-                }`}
-              >
-                <h2 className="font-semibold text-lg">{notification.title}</h2>
-                <p className="mt-2">{notification.message}</p>
-                <p className="text-sm text-gray-500 mt-3">
-                  {notification.createdAt.toLocaleString()}
-                </p>
-              </div>
-            ))}
+            {/* Heading */}
+            <h1 className="text-center text-2xl font-bold sm:text-xl">
+              Notifications
+            </h1>
+
+            {/* Button */}
+            <button
+              onClick={handleMarkAsRead}
+              disabled={isPending}
+              className=" rounded-lg bg-accent px-2 py-3 text-sm font-semibold text-background transition hover:bg-green-300 disabled:opacity-60 sm:w-auto"
+            >
+              {isPending ? "Updating..." : "Mark all as read"}
+            </button>
           </div>
-        )}
+
+          {/* Notifications */}
+          {notifications.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-gray-300 py-8 text-center">
+              <p className="text-gray-500">No notifications yet.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {notifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`rounded-xl border p-3 transition sm:p-2 ${
+                    notification.isRead
+                      ? "bg-white"
+                      : "border-green-200 bg-green-50"
+                  }`}
+                >
+                  <h2 className="text-lg font-semibold">
+                    {notification.title}
+                  </h2>
+
+                  <p className="mt-1 text-sm leading-7 text-gray-700 sm:text-base">
+                    {notification.message}
+                  </p>
+
+                  <p className="mt-2 text-xs text-gray-500 sm:text-sm">
+                    {notification.createdAt.toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

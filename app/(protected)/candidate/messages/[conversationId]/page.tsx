@@ -1,9 +1,8 @@
 import { getConversation } from "@/app/actions/message/getConversation";
-import { getCurrentRecruiter } from "@/lib/auth/getCurrentRecruiter";
+import { getCurrentCandidate } from "@/lib/auth/getCurrentCandidate";
 import MessageForm from "./MessageForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import BackButton from "../../components/BackButton";
 
 interface Props {
   params: Promise<{
@@ -17,20 +16,18 @@ export default async function MessagePage({
   const { conversationId } = await params;
 
   const conversation = await getConversation(conversationId);
+  const candidate = await getCurrentCandidate();
 
-  const recruiter = await getCurrentRecruiter();
-
-  const currentUserId = recruiter.user.id;
+  const currentUserId = candidate.userId;
 
   return (
-    <div className="flex h-screen flex-col bg-gray-100 overflow-hidden">
-   <BackButton/>
-      {/* Header */}
+    <div className="flex h-screen flex-col bg-gray-100">
+
      <header className="border-b bg-white shadow-sm">
   <div className="mx-auto flex max-w-5xl items-center gap-4 px-6 py-4">
 
     <Link
-      href="/recruiter/messages"
+      href="/candidate/messages"
       className="rounded-full p-2 hover:bg-gray-100 transition"
     >
       <ArrowLeft className="h-5 w-5 text-gray-700" />
@@ -53,12 +50,11 @@ export default async function MessagePage({
       <main className="flex-1 overflow-y-auto bg-gray-50">
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-6">
           {conversation.messages.length === 0 ? (
-            <div className="flex flex-1 items-center justify-center text-gray-400">
+            <div className="flex h-full flex-1 items-center justify-center text-gray-400">
               <div className="text-center">
                 <p className="text-5xl">💬</p>
-
                 <p className="mt-4 text-lg">
-                  Start the conversation.
+                  Start the conversation
                 </p>
               </div>
             </div>
@@ -107,12 +103,10 @@ export default async function MessagePage({
         </div>
       </main>
 
-      {/* Message Input */}
+      {/* Input */}
       <footer className="border-t bg-white shadow-md">
         <div className="mx-auto max-w-5xl p-4">
-          <MessageForm
-            conversationId={conversation.id}
-          />
+          <MessageForm conversationId={conversation.id} />
         </div>
       </footer>
 

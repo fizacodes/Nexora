@@ -37,13 +37,16 @@ export default function Page() {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
+              <Link href="/recruiter/job">
               <button className="rounded-xl bg-accent px-8 py-4 font-semibold text-background transition hover:scale-105">
                 Post a Job
               </button>
-               
+              </Link>
+               <Link href="/recruiter">
               <button className="rounded-xl border border-white/20 px-8 py-4 font-semibold text-white transition hover:border-accent hover:text-accent">
                 Learn More
               </button>
+              </Link>
               
             </div>
 

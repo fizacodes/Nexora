@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { messageSchema } from "@/lib/validators/MessageSchema";
-    
 import { revalidatePath } from "next/cache";
 
 export async function sendMessage(
@@ -30,18 +29,13 @@ export async function sendMessage(
 
   const { conversationId, content } = parsed.data;
 
-  // Find conversation
   const conversation = await prisma.conversation.findUnique({
     where: {
       id: conversationId,
     },
     include: {
       recruiter: true,
-      candidate: {
-        include: {
-          user: true,
-        },
-      },
+      candidate: true,
     },
   });
 
@@ -49,12 +43,18 @@ export async function sendMessage(
     throw new Error("Conversation not found.");
   }
 
-  // Ensure only the recruiter who owns this conversation can send
-  if (conversation.recruiter.userId !== session.user.id) {
+  // Check whether the current user belongs to this conversation
+  const isRecruiter =
+    conversation.recruiter.userId === session.user.id;
+
+  const isCandidate =
+    conversation.candidate.userId === session.user.id;
+
+  if (!isRecruiter && !isCandidate) {
     throw new Error("Unauthorized");
   }
 
-  // Create the message
+  // Create message
   await prisma.message.create({
     data: {
       conversationId,
@@ -63,19 +63,27 @@ export async function sendMessage(
     },
   });
 
-  // Create notification for the candidate
+  // Notify the other participant
   await prisma.notification.create({
     data: {
-      userId: conversation.candidate.userId,
+      userId: isRecruiter
+        ? conversation.candidate.userId
+        : conversation.recruiter.userId,
+
       title: "New Message",
+
       message: content,
+
       type: "MESSAGE",
     },
   });
 
+  // Refresh both possible pages
   revalidatePath(`/recruiter/messages/${conversationId}`);
+  revalidatePath(`/candidate/messages/${conversationId}`);
 
   return {
     success: true,
+    errors: {},
   };
 }

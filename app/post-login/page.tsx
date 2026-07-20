@@ -9,24 +9,33 @@ export default async function PostLoginPage() {
     redirect("/login");
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
-    select: {
-      role: true,
-    },
-  });
+const user = await prisma.user.findUnique({
+  where: {
+    id: session.user.id,
+  },
+  include: {
+    profile: true,
+    recruiterProfile: true,
+  },
+});
 
   if (!user?.role) {
     redirect("/role");
   }
 
   if (user.role === "CANDIDATE") {
+    if (!user.profile) {
+      redirect("/candidate/profile");
+    }
+
     redirect("/candidate");
   }
 
   if (user.role === "RECRUITER") {
+    if (!user.recruiterProfile) {
+      redirect("/recruiter/profile");
+    }
+
     redirect("/recruiter");
   }
 

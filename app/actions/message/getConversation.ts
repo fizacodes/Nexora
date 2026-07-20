@@ -1,19 +1,30 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { getCurrentRecruiter } from "@/lib/auth/getCurrentRecruiter";
+import { auth } from "@/auth";
 
 export async function getConversation(conversationId: string) {
-  const recruiter = await getCurrentRecruiter();
+  const session = await auth();
 
-  if (!recruiter.recruiterProfile) {
-    throw new Error("Recruiter profile not found.");
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
   }
 
   const conversation = await prisma.conversation.findFirst({
     where: {
       id: conversationId,
-      recruiterProfileId: recruiter.recruiterProfile.id,
+      OR: [
+        {
+          recruiter: {
+            userId: session.user.id,
+          },
+        },
+        {
+          candidate: {
+            userId: session.user.id,
+          },
+        },
+      ],
     },
 
     include: {
@@ -45,6 +56,25 @@ export async function getConversation(conversationId: string) {
   if (!conversation) {
     throw new Error("Conversation not found.");
   }
+
+
+  // Mark messages as read
+  await prisma.message.updateMany({
+    where: {
+      conversationId,
+
+      senderId: {
+        not: session.user.id,
+      },
+
+      isRead: false,
+    },
+
+    data: {
+      isRead: true,
+    },
+  });
+
 
   return conversation;
 }

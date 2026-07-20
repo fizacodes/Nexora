@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 function LearnMore() {
@@ -36,10 +37,11 @@ function LearnMore() {
           Get started with a free job post and reach qualified candidates in
           just a few minutes.
         </p>
-
+        <Link href='/recruiter/job'>
         <button className="mt-8 rounded-xl bg-background px-5 py-3 font-semibold text-white transition hover:bg-background/90">
           Start Posting
         </button>
+        </Link>
       </div>
 
       {/* Card 2 */}

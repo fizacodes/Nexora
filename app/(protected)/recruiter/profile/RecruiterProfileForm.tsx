@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { saveRecruiterProfile } from "@/app/actions/recruiter/saveProfile";
+import BackButton from "../components/BackButton";
 
 const initialState = {
   success: false,
@@ -23,11 +24,14 @@ export default function RecruiterProfileForm({
 
   return (
     <div className=" bg-white">
+      <BackButton/>
     <form action={formAction} className="max-w-5xl bg-white  mx-auto text-black p-8 space-y-10">
   <div className="rounded-xl border bg-white p-6 shadow-sm">
+     <h3 className="text-red-600">Complete this profile Information to proceed further.</h3>
   <h2 className="text-2xl font-semibold mb-6">
     Recruiter Information
   </h2>
+ 
 
   <div className="grid md:grid-cols-2 gap-6">
 

@@ -1,14 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Briefcase, Bell, User, Menu, X } from "lucide-react";
+import {
+  Home,
+  Briefcase,
+  Bell,
+  User,
+  Menu,
+  X,
+  MessageSquare,
+} from "lucide-react";
 import Link from "next/link";
+import LogoutButton from "./LogoutButton";
 
 type NavbarClientProps = {
   unreadCount: number;
+    unreadMessages: number;
 };
 
-export default function NavbarClient({ unreadCount }: NavbarClientProps) {
+export default function NavbarClient({ unreadCount,unreadMessages }: NavbarClientProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -53,6 +63,26 @@ export default function NavbarClient({ unreadCount }: NavbarClientProps) {
               </div>
             </Link>
 
+             {/* Messages */}
+  <div className="relative group">
+    <Link
+      href="/candidate/messages"
+      className="relative flex items-center justify-center rounded-full p-2 text-background transition hover:bg-white/20 hover:text-accent"
+    >
+      <MessageSquare size={22} />
+
+      {unreadMessages > 0 && (
+        <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full border border-white bg-white px-1 text-[10px] font-semibold text-red-600 shadow-sm">
+          {unreadMessages > 99 ? "99+" : unreadMessages}
+        </span>
+      )}
+    </Link>
+
+    <span className="absolute left-1/2 top-10 hidden -translate-x-1/2 rounded bg-black px-2 py-1 text-xs text-white group-hover:block">
+      Messages
+    </span>
+  </div>
+
             <div className="relative group">
               <Link
                 href="/candidate/notification"
@@ -83,10 +113,14 @@ export default function NavbarClient({ unreadCount }: NavbarClientProps) {
                 </span>
               </div>
             </Link>
+            <LogoutButton/>
           </div>
 
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-background">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-background"
+            >
               {isOpen ? <X /> : <Menu />}
             </button>
           </div>
@@ -99,17 +133,29 @@ export default function NavbarClient({ unreadCount }: NavbarClientProps) {
             <Home size={18} /> Home
           </Link>
 
-          <Link href="/candidate/applications" className="flex items-center gap-2">
+          <Link
+            href="/candidate/applications"
+            className="flex items-center gap-2"
+          >
             <Briefcase size={18} /> Applications
           </Link>
 
-          <Link href="/candidate/notification" className="flex items-center gap-2">
+          <Link href="/candidate/messages" className="flex items-center gap-2">
+            <MessageSquare size={18} /> Messages
+          </Link>
+
+          <Link
+            href="/candidate/notification"
+            className="flex items-center gap-2"
+          >
             <Bell size={18} /> Notifications
           </Link>
 
           <Link href="/candidate/profile" className="flex items-center gap-2">
             <User size={18} /> Profile
           </Link>
+          <LogoutButton/>
+
         </div>
       )}
     </nav>

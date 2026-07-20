@@ -301,6 +301,7 @@ model Conversation {
   messages Message[]
 
   createdAt DateTime @default(now())
+   updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([recruiterProfileId, candidateProfileId, jobId])
 }

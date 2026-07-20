@@ -11,7 +11,7 @@ export type ProfileState = {
     headline?: string[];
     phone?: string[];
     location?: string[];
-    bio?: string[];
+    summary?: string[];
   };
 };
 
@@ -29,7 +29,7 @@ export async function saveProfile(
     headline: formData.get("headline") || undefined,
     phone: formData.get("phone") || undefined,
     location: formData.get("location") || undefined,
-    bio: formData.get("bio") || undefined,
+    summary: formData.get("summary") || undefined,
   });
 
   if (!parsed.success) {
@@ -51,14 +51,14 @@ export async function saveProfile(
       headline: data.headline ?? null,
       phone: data.phone ?? null,
       location: data.location ?? null,
-      bio: data.bio ?? null,
+     summary: data.summary ?? null,
     },
 
     update: {
       headline: data.headline ?? null,
       phone: data.phone ?? null,
       location: data.location ?? null,
-      bio: data.bio ?? null,
+     summary: data.summary ?? null,
     },
   });
 

@@ -45,15 +45,15 @@ export default function SearchBar() {
         placeholder="Location"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="flex-1 px-3 py-2 outline-none text-sm border-l"
+        className="flex-1 px-4 py-3 outline-none text-sm border-l"
       />
 
-      <button
-        onClick={handleSearch}
-        className="bg-accent text-background px-5 py-2 rounded-md text-sm font-medium hover:opacity-90"
-      >
-        Search
-      </button>
+     <button
+  onClick={handleSearch}
+  className="mx-2 my-2 rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-background transition-all duration-200 hover:opacity-90 hover:shadow-md active:scale-95"
+>
+  Search
+</button>
 
     </div>
   );

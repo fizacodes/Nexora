@@ -17,7 +17,7 @@ export default async function ApplicantDetailsPage({
   const application = await getApplicationDetails(id, applicantId);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white text-black">
     <div className="min-h-screen bg-slate-50 px-4 py-8 text-black">
       <div className="mx-auto flex w-full max-w-6xl justify-center">
         <div className="w-full max-w-5xl rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 lg:p-10">

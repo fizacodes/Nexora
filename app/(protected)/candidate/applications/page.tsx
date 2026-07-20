@@ -1,6 +1,7 @@
 import { getApplications } from "@/app/actions/candidate/getApplication";
 import CandidateNavbar from "../components/Navbar";
 import ApplicationList from "./ApplicationList";
+import BackButton from "../components/BackButton";
 
 export default async function ApplicationsPage() {
   const applications = await getApplications();
@@ -10,7 +11,7 @@ export default async function ApplicationsPage() {
       <CandidateNavbar />
 
       <div className="max-w-6xl mx-auto py-8 px-4">
-
+       <BackButton/>
         <h1 className="text-3xl font-bold text-background">
           My Applications
         </h1>

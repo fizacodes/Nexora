@@ -1,20 +1,20 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { getConversations } from "@/app/actions/message/getConversations";
+import { getCandidateConversations } from "@/app/actions/message/getCandidateConversation";
 
-export default async function MessagesPage() {
-  const conversations = await getConversations();
+export default async function CandidateMessagesPage() {
+  const conversations =
+    await getCandidateConversations();
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow">
 
         {/* Header */}
-       {/* Header */}
 <div className="border-b px-6 py-5 flex items-center gap-4">
 
   <Link
-    href="/recruiter"
+    href="/candidate"
     className="rounded-full p-2 hover:bg-gray-100 transition"
   >
     <ArrowLeft className="h-5 w-5 text-gray-700" />
@@ -32,19 +32,22 @@ export default async function MessagesPage() {
 
 </div>
 
-        {/* Conversations */}
+        {/* Conversation List */}
         <div>
+
           {conversations.length === 0 ? (
             <div className="py-20 text-center">
 
-              <div className="text-6xl">💬</div>
+              <div className="text-6xl">
+                💬
+              </div>
 
               <h2 className="mt-4 text-xl font-semibold text-black">
                 No conversations yet
               </h2>
 
-              <p className="mt-2 text-gray-500">
-                Conversations will appear here when you start messaging.
+              <p className="text-gray-500 mt-2">
+                Conversations with recruiters will appear here.
               </p>
 
             </div>
@@ -52,44 +55,38 @@ export default async function MessagesPage() {
             conversations.map((conversation) => (
               <Link
                 key={conversation.id}
-                href={`/recruiter/messages/${conversation.id}`}
+                href={`/candidate/messages/${conversation.id}`}
               >
-                <div className="border-b hover:bg-gray-50 transition cursor-pointer p-6">
+                <div className="border-b hover:bg-gray-50 transition p-6 cursor-pointer">
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex justify-between items-center">
 
                     <div>
 
                       <h2 className="font-semibold text-lg text-black">
-                        {conversation.candidate.user.name}
+                        {conversation.recruiter.user.name}
                       </h2>
 
-                      <p className="text-sm text-gray-500">
+                      <p className="text-gray-500 text-sm">
                         {conversation.job.title}
                       </p>
 
                     </div>
 
-                    {/* <div className="text-sm text-gray-400">
-                      {conversation.updatedAt.toLocaleDateString()}
-                    </div> */}
-
                   </div>
 
-                  {conversation.messages.length > 0 && (
-                    <p className="mt-3 text-gray-600 line-clamp-1">
-                      {
-                        conversation.messages[
-                          conversation.messages.length - 1
-                        ].content
-                      }
-                    </p>
-                  )}
+                  <p className="mt-3 text-gray-600 line-clamp-1">
+
+                    {conversation.messages[0]?.content ??
+                      "No messages yet"}
+
+                  </p>
 
                 </div>
               </Link>
             ))
           )}
+
         </div>
 
       </div>

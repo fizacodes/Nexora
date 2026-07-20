@@ -4,6 +4,7 @@ import {
   MapPin,
   Eye,
 } from "lucide-react";
+import Link from "next/link";
 
 type Props = {
   user: {
@@ -98,6 +99,11 @@ export default function ProfileHeader({
         </div>
 
       </div>
+      <Link href="/candidate/profile/edit">
+  <button className="mt-4 rounded-lg bg-accent px-5 py-2 text-background font-medium hover:opacity-90">
+    Edit Profile
+  </button>
+</Link>
 
       <div
         className="

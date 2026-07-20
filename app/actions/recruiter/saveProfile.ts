@@ -3,6 +3,7 @@
 import { getCurrentRecruiter } from "@/lib/auth/getCurrentRecruiter";
 import { prisma } from "@/lib/prisma";
 import { recruiterProfileSchema } from "@/lib/validators/RecruiterSchema";
+import { redirect } from "next/navigation";
 
 export async function saveRecruiterProfile(
   prevState: any,
@@ -102,7 +103,7 @@ await prisma.recruiterProfile.upsert({
   },
 });
 
-
+redirect("/recruiter")
 return {
   success: true,
   message: "Recruiter profile saved successfully.",

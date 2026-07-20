@@ -18,7 +18,7 @@ export const profileSchema = z.object({
     .max(100, "Location is too long.")
     .optional(),
 
-  bio: z
+  summary: z
     .string()
     .max(1000, "Bio cannot exceed 1000 characters.")
     .optional(),

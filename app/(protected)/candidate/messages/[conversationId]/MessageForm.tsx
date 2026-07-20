@@ -33,30 +33,28 @@ export default function MessageForm({
   }, [state.success, router]);
 
   return (
-    <form
-      action={formAction}
-      className="flex items-center gap-3"
-    >
-      <input
-        type="hidden"
-        name="conversationId"
-        value={conversationId}
-      />
+   <form action={formAction} className="flex items-center gap-3">
+  <input
+    type="hidden"
+    name="conversationId"
+    value={conversationId}
+  />
 
-      <input
-        ref={inputRef}
-        type="text"
-        name="content"
-        placeholder="Type your message..."
-        className="flex-1 rounded-full border text-black border-gray-300 px-5 py-3 outline-none focus:border-accent"
-      />
+  <input
+    ref={inputRef}
+    type="text"
+    name="content"
+    placeholder="Type your message..."
+    className="flex-1 rounded-full border text-black border-gray-300 bg-gray-50 px-5 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+  />
 
-      <button
-        disabled={pending}
-        className="rounded-full bg-accent px-6 py-3 text-background font-medium hover:opacity-90 disabled:opacity-60"
-      >
-        {pending ? "Sending..." : "Send"}
-      </button>
-    </form>
+  <button
+    type="submit"
+    disabled={pending}
+    className="rounded-full bg-accent px-6 py-3 font-medium text-background transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+  >
+    {pending ? "Sending..." : "Send"}
+  </button>
+</form>
   );
 }

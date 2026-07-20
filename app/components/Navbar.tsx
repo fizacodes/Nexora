@@ -1,81 +1,141 @@
+"use client";
+
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <nav className="flex h-14 items-center justify-between px-40 bg-background text-white">
-      
-      {/* Logo */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex h-10 w-10 items-center justify-center">
-          <span className="text-3xl font-black text-accent rotate-[-10deg]">
+    <nav className="sticky top-0 z-50 bg-background text-white shadow-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-10">
+        {/* Logo */}
+        <Link href="/" className="flex items-center">
+          <span className="-rotate-6 text-3xl font-black text-accent">
             N
           </span>
-          <h1 className="text-2xl font-bold tracking-tight hover:text-accent transition-colors duration-300 cursor-pointer">
+          <span className="text-2xl font-bold tracking-tight hover:text-accent transition-colors">
             exora
-          </h1>
+          </span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <div className="hidden items-center gap-5 lg:gap-8 text-sm md:flex">
+          <a href="#home" className="hover:text-accent transition">
+            Home
+          </a>
+
+          <a href="#about" className="hover:text-accent transition">
+            How it works
+          </a>
+
+          <a href="#feature" className="hover:text-accent transition">
+            Features
+          </a>
+
+          <a href="#faqs" className="hover:text-accent transition">
+            FAQs
+          </a>
+
+          <a href="#contact" className="hover:text-accent transition">
+            Contact
+          </a>
         </div>
+
+        {/* Desktop Buttons */}
+        <div className="hidden items-center gap-4 md:flex">
+          <Link
+            href="/login"
+            className="rounded-full border border-accent px-6 py-2 text-sm text-accent transition hover:bg-accent hover:text-background"
+          >
+            Login
+          </Link>
+
+          <Link
+            href="/signup"
+            className="rounded-full bg-accent px-6 py-2 text-sm text-background transition hover:opacity-90"
+          >
+            Signup
+          </Link>
+        </div>
+
+        {/* Hamburger */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden"
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
-      {/* Nav Links */}
-      <div className="flex gap-6 text-[12px]">
-        <a
-          href="#home"
-          className="hover:text-accent transition-colors duration-300"
-        >
-          Home
-        </a>
-        <a
-          href="#about"
-          className="hover:text-accent transition-colors duration-300"
-        >
-          How it works
-        </a>
-        <a
-          href="#feature"
-          className="hover:text-accent transition-colors duration-300"
-        >
-          Features
-        </a>
-        <a
-          href="#faqs"
-          className="hover:text-accent transition-colors duration-300"
-        >
-          FAQs
-        </a>
-        <a
-          href="#contact"
-          className="hover:text-accent transition-colors duration-300"
-        >
-          Contact
-        </a>
-      </div>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden border-t border-white/10 bg-background">
+          <div className="flex flex-col px-6 py-5 space-y-5">
+            <a
+              href="#home"
+              onClick={closeMenu}
+              className="hover:text-accent transition"
+            >
+              Home
+            </a>
 
-      {/* Auth Buttons */}
-      <div className="flex gap-4 text-[12px]">
-        
-        {/* Login */}
-        <Link
-          href="/login"
-          className="py-2 px-6 border border-accent text-accent rounded-full 
-          hover:bg-accent hover:text-background 
-          hover:scale-105 hover:bg-opacity-90  shadow-md hover:shadow-accent/40 
-          transition-all duration-300"
-        >
-          Login
-        </Link>
+            <a
+              href="#about"
+              onClick={closeMenu}
+              className="hover:text-accent transition"
+            >
+              How it works
+            </a>
 
-        {/* Signup */}
-        <Link
-          href="/signup"
-          className="bg-accent text-background py-2 px-6 rounded-full 
-          hover:bg-opacity-90 
-          hover:scale-105 
-          shadow-md hover:shadow-accent/40 
-          transition-all duration-300"
-        >
-          Signup
-        </Link>
-      </div>
+            <a
+              href="#feature"
+              onClick={closeMenu}
+              className="hover:text-accent transition"
+            >
+              Features
+            </a>
+
+            <a
+              href="#faqs"
+              onClick={closeMenu}
+              className="hover:text-accent transition"
+            >
+              FAQs
+            </a>
+
+            <a
+              href="#contact"
+              onClick={closeMenu}
+              className="hover:text-accent transition"
+            >
+              Contact
+            </a>
+
+            <div className="flex flex-col gap-3 pt-3">
+              <Link
+                href="/login"
+                onClick={closeMenu}
+                className="rounded-full border border-accent py-2 text-center text-accent transition hover:bg-accent hover:text-background"
+              >
+                Login
+              </Link>
+
+              <Link
+                href="/signup"
+                onClick={closeMenu}
+                className="rounded-full bg-accent py-2 text-center text-background transition hover:opacity-90"
+              >
+                Signup
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

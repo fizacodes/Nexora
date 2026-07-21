@@ -2,7 +2,19 @@
 
 import { useTransition } from "react";
 import { updateApplicationStatus } from "@/app/actions/recruiter/updateApplicationStatus";
-import { ApplicationStatus } from "@/generated/prisma/enums";
+
+const APPLICATION_STATUSES = [
+  "APPLIED",
+  "REVIEWING",
+  "SHORTLISTED",
+  "INTERVIEW",
+  "OFFERED",
+  "HIRED",
+  "REJECTED",
+  "WITHDRAWN",
+] as const;
+
+type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
 
 interface Props {
   applicationId: string;
@@ -17,25 +29,25 @@ export default function ApplicationStatusForm({
 
   return (
     <div>
-    <select
-      defaultValue={currentStatus}
-      disabled={pending}
-      className="border rounded-md p-2"
-      onChange={(e) => {
-        startTransition(async () => {
-          await updateApplicationStatus(
-            applicationId,
-            e.target.value as ApplicationStatus
-          );
-        });
-      }}
-    >
-      {Object.values(ApplicationStatus).map((status) => (
-        <option key={status} value={status}>
-          {status}
-        </option>
-      ))}
-    </select>
+      <select
+        defaultValue={currentStatus}
+        disabled={pending}
+        className="rounded-md border p-2"
+        onChange={(e) => {
+          startTransition(async () => {
+            await updateApplicationStatus(
+              applicationId,
+              e.target.value as ApplicationStatus
+            );
+          });
+        }}
+      >
+        {APPLICATION_STATUSES.map((status) => (
+          <option key={status} value={status}>
+            {status}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

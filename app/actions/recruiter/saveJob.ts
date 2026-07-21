@@ -52,6 +52,13 @@ export async function createJob(
     } = parsed.data;
 
 
+    if (!recruiter.recruiterProfile.companyName) {
+      return {
+        success: false,
+        message: "Please complete your company profile first.",
+      };
+    }
+
     await prisma.job.create({
       data: {
         title,

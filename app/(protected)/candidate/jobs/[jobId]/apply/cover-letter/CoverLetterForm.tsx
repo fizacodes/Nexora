@@ -41,7 +41,7 @@ export default function CoverLetterForm({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-8">
+    <div className="bg-white rounded-xl shadow-sm border p-8 text-black">
       <h2 className="text-2xl font-bold text-background">Cover Letter</h2>
 
       <p className="text-gray-500 mt-2">

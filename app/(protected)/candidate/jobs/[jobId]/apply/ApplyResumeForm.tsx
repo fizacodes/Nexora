@@ -71,7 +71,7 @@ export default function ApplyResumeForm({ jobId }: Props) {
       </label>
 
       {/* Upload Resume */}
-      <label className="flex flex-col gap-3 border rounded-lg p-4 mt-4 cursor-pointer hover:border-blue-500">
+      {/* <label className="flex flex-col gap-3 border rounded-lg p-4 mt-4 cursor-pointer hover:border-blue-500">
 
         <div className="flex items-start gap-3">
 
@@ -101,8 +101,8 @@ export default function ApplyResumeForm({ jobId }: Props) {
             resumeUrl={resumeUrl}
             setResumeUrl={setResumeUrl}
           />
-        )} */}
-      </label>
+        )} 
+      </label> */}
 
       <div className="flex justify-end mt-8">
         <button

@@ -60,7 +60,7 @@ export default async function PreviewPage({
 
 
   return (
-    <div className="min-h-screen bg-gray-100 px-6 py-10">
+    <div className="min-h-screen bg-gray-100 px-6 py-10 text-black">
       <div className="max-w-4xl mx-auto">
 
         {/* Progress */}

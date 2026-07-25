@@ -21,8 +21,9 @@ export default async function ApplyPage({ params }: Props) {
     notFound();
   }
 
-  return (
-    <main className="max-w-3xl mx-auto py-10 px-6">
+  return ( 
+    <div className="bg-white h-screen text-black">
+    <main className="max-w-3xl mx-auto py-10 px-6 bg-white">
       <div className="space-y-2 mb-8">
         <p className="text-sm text-muted-foreground">
           Apply for
@@ -36,8 +37,10 @@ export default async function ApplyPage({ params }: Props) {
           {job.company}
         </p>
       </div>
-
+    
       <ApplyResumeForm jobId={jobId} />
     </main>
+    
+</div>
   );
 }

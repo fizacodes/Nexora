@@ -84,7 +84,7 @@ useEffect(() => {
 }, [state, router, jobId]);
 
   return (
-    <form action={action} className="space-y-6">
+    <form action={action} className="space-y-6 text-black">
         <div>
             <input type="hidden" name="jobId" value={jobId} />
 <input type="hidden" name="resumeType" value={resumeType} />

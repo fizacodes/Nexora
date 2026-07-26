@@ -176,7 +176,7 @@ useEffect(() => {
             {profile.skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-4 py-2 rounded-full bg-accent/10 text-accent font-medium"
+                className="px-4 py-2 rounded-full bg-accent text-background font-medium"
               >
                 {skill.name}
               </span>

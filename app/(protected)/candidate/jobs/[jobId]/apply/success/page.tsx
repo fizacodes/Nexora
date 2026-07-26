@@ -16,7 +16,7 @@ export default function SuccessPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-6 text-black">
 
       <div className="bg-white rounded-2xl shadow-sm border p-10 max-w-xl w-full text-center">
 

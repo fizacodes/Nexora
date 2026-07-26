@@ -9,7 +9,7 @@ export default function ApplicationList({
 }: Props) {
   if (applications.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-10 mt-6 text-center">
+      <div className="bg-white rounded-xl shadow-sm p-10 mt-6 text-center text-black">
         <h2 className="text-2xl font-semibold text-background">
           No Applications Yet
         </h2>

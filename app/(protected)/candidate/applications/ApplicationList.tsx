@@ -29,7 +29,7 @@ export default function ApplicationList({
   }
 
   return (
-    <div className="mt-6 space-y-5">
+    <div className="mt-6 space-y-5 text-black">
       {applications.map((application) => (
         <div
           key={application.id}
